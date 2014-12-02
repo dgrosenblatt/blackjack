@@ -2,18 +2,23 @@ require_relative 'hand.rb'
 require_relative 'deck.rb'
 require_relative 'card.rb'
 
+require 'pry'
+
 # betting
 # double down
 # blackjacks / insurance
 # surrender
 # splitting
+# dealer hit on soft 17
+# multiple decks that don't get reshuffled right away
 
 
 class Blackjack
-  def initialize(deck, player_hand, dealer_hand)
-    @deck = deck
-    @player_hand = player_hand
-    @dealer_hand = dealer_hand
+  def initialize(balance)
+    @deck = Deck.new.shuffle
+    @player_hand = Hand.new
+    @dealer_hand = Hand.new
+    @balance = balance
     start_game
   end
 
@@ -26,6 +31,7 @@ class Blackjack
     sleep 1
     @player_hand.hit(@deck.pop)
     puts "Player was dealt the #{@player_hand.cards.last.rank}#{@player_hand.cards.last.suit}"
+    puts
     sleep 1
     @dealer_hand.hit(@deck.pop)
     puts "Player has #{@player_hand.score}"
@@ -38,6 +44,7 @@ class Blackjack
     player_turn
     dealer_turn
     result
+    play_again
   end
 
   def player_turn
@@ -57,7 +64,7 @@ class Blackjack
     puts "Player has #{@player_hand.score}"
     if @player_hand.score > 21
       puts "Bust! You lose!"
-      exit
+      play_again
     end
     sleep 1
     player_turn
@@ -81,7 +88,7 @@ class Blackjack
     end
     if @dealer_hand.score > 21
       puts "Bust! You win!"
-      exit
+      play_again
     end
   end
 
@@ -95,6 +102,16 @@ class Blackjack
     end
   end
 
+  def play_again
+    puts "Play again?"
+    response = gets.chomp.upcase
+    if response[0] == 'Y'
+      initialize(@balance)
+    else
+      exit
+    end
+  end
+
 end
 
-Blackjack.new(Deck.new.shuffle, Hand.new, Hand.new)
+Blackjack.new(100)
