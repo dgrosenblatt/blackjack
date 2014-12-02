@@ -9,10 +9,13 @@ class Hand
     @cards << card
   end
 
+  def number_of_aces
+    @cards.count { |card| card.ace? }
+  end
+
   def score
     score = 0
-    ranks = @cards.map { |card| card.rank }
-    number_of_aces = ranks.count('A')
+
     @cards.each do |card|
       if card.paint?
         score += 10
