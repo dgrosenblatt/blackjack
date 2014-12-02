@@ -2,23 +2,6 @@ require_relative 'hand.rb'
 require_relative 'deck.rb'
 require_relative 'card.rb'
 
-require 'pry'
-
-# to do:
-# save balance to file
-# auto stand on 21
-# surrender
-# splitting
-
-
-# done:
-# add betting
-# handle blackjacks on opening deal
-# multiple decks that don't get reshuffled right away
-# add cheat for remaining cards
-# dealer hit on soft 17
-
-
 class Blackjack
   def initialize(balance, deck)
     @deck = deck
